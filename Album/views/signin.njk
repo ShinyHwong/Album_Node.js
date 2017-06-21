@@ -1,0 +1,58 @@
+{% extends 'base.njk' %}
+{% block body %}
+<body style="background: url('img/wallpaper.jpg') no-repeat center center; background-size: cover">
+{% endblock %}
+{% block header %}
+{% endblock %}
+{% block content %}
+    <div class="container" style="padding-top: 150px;">
+        <div class="form row">
+            <form class="form-horizontal col-sm-offset-4 col-md-offset-4" id="login_form">
+                <h3 class="form-title">登录</h3>
+                <div class="col-sm-6 col-md-6">
+                    <div class="form-group">
+                        <input class="form-control required" type="text" placeholder="Username" name="username"
+                               autofocus="autofocus" maxlength="20"/>
+                    </div>
+                    <div class="form-group">
+                        <input class="form-control required" type="password" placeholder="Password" name="password"
+                               maxlength="8"/>
+                    </div>
+                    <div class="form-group">
+                    </div>
+                    <div class="form-group">
+                        <a href="../" class="btn btn-default pull-left" >返回</a>
+                        <a id="signin" class="btn btn-success pull-right">登录</a>
+                        <a href="../signup" class="btn btn-info pull-right"  style="margin-right: 20px">注册</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        $(function () {
+            $('#signin').on('click', function () {
+                var username = $('input[name="username"]').val();
+                var password = $('input[name="password"]').val();
+                var signinData = {username: username, password: password};
+                $.ajax({
+                    cache : false,
+
+                    type : 'POST',
+                    url : '/signin',
+                    data : signinData,
+                    success : function (data) {
+                        if (data == '登录成功'){
+                            window.location.href = '../';
+                        } else{
+                            alert(data);
+                        }
+                    }
+                });
+                return false;
+            })
+        })
+    </script>
+{% endblock %}
+</body>

@@ -1,0 +1,36 @@
+{% extends 'base.njk' %}
+
+{% block content %}
+    <div class="row">
+        {% for photo in photoArr %}
+        <div class="col-xs-6 col-md-3 photo">
+            <a href="../{{ photo }}" class="thumbnail">
+                <img src="../{{ photo }}" alt="...">
+            </a>
+            <p><a id="delete" style="margin-top: -15px; margin-bottom: 20px;" class="btn btn-default pull-right" role="button">删除</a></p>
+        </div>
+            {% endfor %}
+    </div>
+
+    <script>
+        $(function () {
+            $('#delete').on('click', function () {
+                var row = $('#delete').parents('.row')[0];
+                var photo = $('#delete').parents('.photo')[0];
+                var photoUrl = $(photo).find('img')[0].src;
+                $.ajax({
+                    type : 'get',
+                    url : '/album/delete/',
+                    data : {photoUrl:photoUrl},
+                    success : function (data) {
+                        if (data == '删除成功'){
+                            $(photo).remove();
+                        } else {
+//                            alert(data);
+                        }
+                    }
+                })
+            });
+        })
+    </script>
+{% endblock %}

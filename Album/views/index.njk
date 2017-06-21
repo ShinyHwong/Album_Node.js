@@ -1,0 +1,59 @@
+{#扩展base.njk#}
+{% extends 'base.njk' %}
+{% block header %}
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <h1 class="navbar-brand">{{ title }}</h1>
+            </div>
+
+            <ul class="nav navbar-nav navbar-right">
+                {% if user %}
+                    <li style="margin-right: 20px;"><p class="navbar-text navbar-right">欢迎：<a href="/admin" class="navbar-link">{{ user.username }}</a></p></li>
+                    <li><a id="logout" href="">注销</a></li>
+                {% else %}
+                    <li><a href="/signup"><span class="glyphicon glyphicon-user"></span> 注册</a></li>
+                    <li><a href="/signin"><span class="glyphicon glyphicon-log-in"></span> 登录</a></li>
+                {% endif %}
+            </ul>
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            </div><!-- /.navbar-collapse -->
+        </div><!-- /.container-fluid -->
+    </nav>
+
+
+    <script>
+        $(function () {
+            $('#logout').on('click', function () {
+                $.ajax({
+                    type : 'get',
+                    url : '/signout',
+                    success : function (data) {
+                        alert(data);
+                        window.location.reload();
+                    }
+                })
+            })
+        })
+    </script>
+{% endblock %}
+{% block content %}
+    <div class="row">
+        {% for album in albumArr %}
+            <div class="col-sm-6 col-md-3">
+                <div class="thumbnail">
+                    {% if album.photos[0] %}
+                        <img style="width: 280px; height: 200px" src="{{ album.photos[0] }}">
+                    {% else %}
+                        <img style="width: 280px; height: 200px" src="/img/timg.jpg">
+                    {% endif %}
+                    <div class="caption">
+                        <h3>{{ album.name }}</h3>
+                        <p><a href="album/{{ album.name }}" class="btn btn-primary" role="button">进入相册</a></p>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
+
